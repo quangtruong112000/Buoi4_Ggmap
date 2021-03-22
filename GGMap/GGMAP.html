@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Map API Demo</title>
+    <style type="text/css">
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        function initMap() {
+            //location
+            const UTC2 = { lat: 10.846459, lng: 106.794267 };
+            const Home = { lat: 10.844734, lng: 106.799964 };
+
+            //map
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: UTC2,
+            });
+            const markertruong = new google.maps.Marker({
+                position: UTC2,
+                map: map,
+                animation: google.maps.Animation.DROP,
+                icon: {
+                  url: "utc2.png",
+                  scaledSize: { width: 40, height: 40 }
+              }
+            });
+            const markernha = new google.maps.Marker({
+              position: Home,
+              map: map,
+              animation: google.maps.Animation.DROP,
+              icon: {
+                  url: "\avatar.jpg",
+                  scaledSize: { width: 50, height: 60 }
+              }
+          });
+          const directionsService = new google.maps.DirectionsService();
+          const directionsRenderer = new google.maps.DirectionsRenderer();
+         directionsRenderer.setMap(map);
+         var request = {
+             origin: "TRƯỜNG Đại học Giao thông vận tải phân hiệu tại TP. HỒ CHÍ MINH, 451 Lê Văn Việt,Phường Tăng Nhơn Phú A, thành phố Thủ Đức(Quận 9), Thành phố Hồ Chí Minh, Việt Nam.",
+             destination: "10.844734, 106.799964",
+              travelMode: 'WALKING'
+          };
+          directionsService.route(request, function (response, status) {
+              if (status == 'OK') {
+                  directionsRenderer.setDirections(response);
+
+              }
+          });
+
+          markertruong.addListener("click", () => {
+              var infowindow = new google.maps.InfoWindow({
+                  // nội dung của InfoWindow
+                  content: "Trường Đại học Giao thông vận tải nằm tại 451 Lê Văn Việt,Phường Tăng Nhơn Phú A, thành phố Thủ Đức(Quận 9 cũ), Thành phố Hồ Chí Minh, Việt Nam."
+              });
+
+              infowindow.open(map, markertruong);
+          });
+          markernha.addListener("click", () => {
+              var infowindow = new google.maps.InfoWindow({
+                  // nội dung của InfoWindow
+                  content: "MSV: 5951071112 <br> Tên: Trần Quang Trường <br> Lớp: Công nghệ thông tin K59 <br> Tuổi: 21 tuổi <br> Ngày Sinh: 01-01-2000 <br> Email: 5951071114@st.utc2.edu.vn <br> Quê Quán: Bình Thuận "
+              });
+
+              infowindow.open(map, markernha);
+
+          });
+        }
+    </script>
+</head>
+
+<body>
+    <h3>Đây là nơi sẽ đặt bản đồ vào</h3>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=drawing&v=weekly"
+            async></script>
+</body>
+
+</html>
